@@ -6,9 +6,10 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
+use App\User;
 use Tests\TestCase;
 
-class RegistrationTest extends TestCase
+class AuthenticationTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -35,5 +36,23 @@ class RegistrationTest extends TestCase
         $this->assertTrue(Auth::check());
         $response->assertRedirect('/home');
 
+    }
+    /** @test */
+    function user_can_login()
+    {
+        $response = $this->get('/login');
+        $response->assertStatus(200);
+
+        $user = factory(User::class)->create();
+
+        $attributes = [
+            'email'     => $user->email,
+            'password'  => '123456789',
+        ];
+
+        $response = $this->post('/login', $attributes);
+
+        $this->assertTrue(Auth::check());
+        $response->assertRedirect('/home');
     }
 }
