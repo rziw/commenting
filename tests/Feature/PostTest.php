@@ -25,4 +25,11 @@ class PostTest extends TestCase
         $this->get('/posts')->assertSee($attributes['title']);
     }
 
+    /** @test */
+    public function only_authenticated_user_can_create_a_post()
+    {
+        $attributes = factory('App\Models\Post')->raw();
+
+        $response = $this->post('/posts', $attributes)->assertRedirect('login');
+    }
 }
