@@ -22,5 +22,7 @@ class PostTest extends TestCase
         $response = $this->post('/posts', $attributes);
 
         $this->assertDatabaseHas('posts', $attributes);
+
+        $response->assertRedirect('/posts');
     }
 }

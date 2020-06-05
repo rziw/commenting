@@ -31,7 +31,7 @@ class PostController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function store(Request $request)
     {
@@ -39,6 +39,7 @@ class PostController extends Controller
         //persist
         Post::create($request->all());
         //redirect
+        return redirect('/posts');
     }
 
     /**
