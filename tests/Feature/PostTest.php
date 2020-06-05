@@ -32,4 +32,25 @@ class PostTest extends TestCase
 
         $response = $this->post('/posts', $attributes)->assertRedirect('login');
     }
+
+    /** @test */
+    public function post_requires_title()
+    {
+        $this->actingAs(factory('App\User')->create());
+
+        $attributes = factory('App\Models\Post')->raw(['title' => '']);
+
+        $this->post('/posts', $attributes)->assertSessionHasErrors('title');
+    }
+
+    /** @test */
+    public function post_requires_a_description()
+    {
+        $this->actingAs(factory('App\User')->create());
+
+        $attributes = factory('App\Models\Post')->raw(['description' => '']);
+
+        $this->post('/posts', $attributes)->assertSessionHasErrors('description');
+    }
+
 }

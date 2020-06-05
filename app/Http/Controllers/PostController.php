@@ -38,6 +38,11 @@ class PostController extends Controller
     public function store(Request $request)
     {
         //validate
+        $validatedData = $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+        ]);
+        $validatedData['owner_id'] = auth()->id();
         //persist
         Post::create($request->all());
         //redirect
