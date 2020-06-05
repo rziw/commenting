@@ -14,15 +14,17 @@ class PostTest extends TestCase
     /** @test */
     public function user_can_create_a_post()
     {
+        $this->withoutExceptionHandling();
+
         $attributes = [
             'title'                 => 'test post',
             'description'           => 'example test fake',
         ];
 
         $response = $this->post('/posts', $attributes);
-
         $this->assertDatabaseHas('posts', $attributes);
 
         $response->assertRedirect('/posts');
+        $this->get('/posts')->assertSee($attributes['title']);
     }
 }
