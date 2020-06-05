@@ -17,7 +17,14 @@ class CreatePostsTable extends Migration
             $table->id();
             $table->string('title');
             $table->string('description');
+            $table->string('status')->nullable();
+            $table->bigInteger('owner_id');
+
             $table->timestamps();
+
+            //relations
+            $table->foreign('owner_id')->references('id')->on('users')
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
@@ -28,6 +35,8 @@ class CreatePostsTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('posts');
+        Schema::enableForeignKeyConstraints();
     }
 }

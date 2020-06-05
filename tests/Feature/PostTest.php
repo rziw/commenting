@@ -14,11 +14,12 @@ class PostTest extends TestCase
     /** @test */
     public function user_can_create_a_post()
     {
-        $this->withoutExceptionHandling();
+        $this->be(factory('App\User')->create());
 
         $attributes = [
             'title'                 => 'test post',
             'description'           => 'example test fake',
+            'owner_id'              => auth()->id()
         ];
 
         $response = $this->post('/posts', $attributes);
@@ -27,4 +28,5 @@ class PostTest extends TestCase
         $response->assertRedirect('/posts');
         $this->get('/posts')->assertSee($attributes['title']);
     }
+
 }
