@@ -15,12 +15,11 @@ class PostTest extends TestCase
     public function user_can_create_a_post()
     {
         $this->be(factory('App\User')->create());
-
         $attributes = factory('App\Models\Post')->raw();
 
         $response = $this->post('/posts', $attributes);
-        $this->assertDatabaseHas('posts', $attributes);
 
+        $this->assertDatabaseHas('posts', $attributes);
         $response->assertRedirect('/posts');
         $this->get('/posts')->assertSee($attributes['title']);
     }
@@ -56,8 +55,6 @@ class PostTest extends TestCase
     /** @test */
     public function user_can_edit_a_post()
     {
-        $this->withoutExceptionHandling();
-
         $this->be(factory('App\User')->create());
         $post = factory('App\Models\Post')->create();
 
