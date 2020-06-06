@@ -53,4 +53,25 @@ class PostTest extends TestCase
         $this->post('/posts', $attributes)->assertSessionHasErrors('description');
     }
 
+    /** @test */
+    public function user_can_edit_a_post()
+    {
+        $this->withoutExceptionHandling();
+
+        $this->be(factory('App\User')->create());
+        $post = factory('App\Models\Post')->create();
+
+        $this->get("/posts/$post->id/edit")->assertStatus(200);
+
+        $attributes = [
+            'title'         => 'Title has Changed',
+            'description'   => 'Description has changed'
+        ];
+
+        $response = $this->put("/posts/$post->id", $attributes);
+
+        $this->assertDatabaseHas('posts', $attributes);
+        $response->assertRedirect("/posts/$post->id/edit");
+    }
+
 }
