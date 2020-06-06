@@ -22,7 +22,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::post('/posts', 'PostController@store');
+    Route::resource('/posts', 'PostController')->except('index');
 });
 
 Route::get('/posts', 'PostController@index');
