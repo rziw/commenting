@@ -64,6 +64,8 @@ class PostTest extends TestCase
         $this->be(factory('App\User')->create());
         $post = factory('App\Models\Post')->create();
 
+        echo "logged in : ".\auth()->id()."_";
+        echo "owner : ".$post->owner_id."_";
         $this->get("/posts/$post->id/edit")->assertStatus(200);
 
         $attributes = [
@@ -85,5 +87,30 @@ class PostTest extends TestCase
 
         $this->get("/posts/$post->id/edit")->assertRedirect('login');
         $this->put("/posts/$post->id", [])->assertRedirect('login');
+    }
+
+    /** @test */
+    public function only_the_owner_of_the_post_can_edit_it()
+    {
+        $post = factory('App\Models\Post')->create();
+        $this->actingAs(factory('App\User')->create());
+
+        $attributes = [
+            'title'         => 'Title has Changed',
+            'description'   => 'Description has changed'
+        ];
+
+        $this->get("/posts/$post->id/edit")->assertStatus(403);
+        $this->put("/posts/$post->id", $attributes)->assertStatus(403);
+    }
+
+    /** @test */
+    public function users_can_view_specific_post()
+    {
+        $this->actingAs(factory('App\User')->create());
+        $post = factory('App\Models\Post')->create();
+
+        $this->get("/posts/$post->id")->assertStatus(200)
+        ->assertSee($post->title, $post->description);
     }
 }
