@@ -69,7 +69,7 @@ class PostTest extends TestCase
 
         $this->assertDatabaseHas('posts', $attributes);
         $response->assertRedirect("/posts/$post->id/edit");
-        $this->get('/posts')->assertSee($attributes['title']);
+        $this->get("/posts/$post->id/edit")->assertSee($attributes['title']);
     }
 
 }
