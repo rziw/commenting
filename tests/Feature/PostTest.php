@@ -78,4 +78,12 @@ class PostTest extends TestCase
         $this->get("/posts/$post->id/edit")->assertSee($attributes['title']);
     }
 
+    /** @test */
+    public function only_authenticated_user_can_edit_a_post()
+    {
+        $post = factory('App\Models\Post')->create();
+
+        $this->get("/posts/$post->id/edit")->assertRedirect('login');
+        $this->put("/posts/$post->id", [])->assertRedirect('login');
+    }
 }
