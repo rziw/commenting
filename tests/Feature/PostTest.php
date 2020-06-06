@@ -37,9 +37,12 @@ class PostTest extends TestCase
     {
         $this->actingAs(factory('App\User')->create());
 
-        $attributes = factory('App\Models\Post')->raw(['title' => '']);
+        $post = factory('App\Models\Post')->create();
+
+        $attributes = ['title' => '', 'description' => 'test description'];
 
         $this->post('/posts', $attributes)->assertSessionHasErrors('title');
+        $this->put("/posts/$post->id", $attributes)->assertSessionHasErrors('title');
     }
 
     /** @test */
@@ -47,9 +50,12 @@ class PostTest extends TestCase
     {
         $this->actingAs(factory('App\User')->create());
 
-        $attributes = factory('App\Models\Post')->raw(['description' => '']);
+        $post = factory('App\Models\Post')->create();
+
+        $attributes = ['title' => 'Test title', 'description' => ''];
 
         $this->post('/posts', $attributes)->assertSessionHasErrors('description');
+        $this->put("/posts/$post->id", $attributes)->assertSessionHasErrors('description');
     }
 
     /** @test */
