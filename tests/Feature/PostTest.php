@@ -53,6 +53,19 @@ class PostTest extends TestCase
     }
 
     /** @test */
+    public function post_requires_a_category_id()
+    {
+        $this->actingAs(factory('App\User')->create());
+
+        $post = factory('App\Models\Post')->create();
+
+        $attributes = ['title' => 'Test title', 'description' => 'test Description', 'category_id' => ''];
+
+        $this->post('/posts', $attributes)->assertSessionHasErrors('category_id');
+        $this->put("/posts/$post->id", $attributes)->assertSessionHasErrors('category_id');
+    }
+
+    /** @test */
     public function user_can_edit_a_post()
     {
         $this->be(factory('App\User')->create());
@@ -62,7 +75,8 @@ class PostTest extends TestCase
 
         $attributes = [
             'title'         => 'Title has Changed',
-            'description'   => 'Description has changed'
+            'description'   => 'Description has changed',
+            'category_id'   => $post->category_id
         ];
 
         $response = $this->put("/posts/$post->id", $attributes);
@@ -91,7 +105,8 @@ class PostTest extends TestCase
 
         $attributes = [
             'title'         => 'Title has Changed',
-            'description'   => 'Description has changed'
+            'description'   => 'Description has changed',
+            'category_id'   => $post->category_id
         ];
 
         $this->get("/posts/$post->id/edit")->assertStatus(403);
