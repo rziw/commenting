@@ -138,4 +138,13 @@ class PostTest extends TestCase
 
         $this->delete("/posts/$post->id")->assertRedirect('login');
     }
+
+    /** @test */
+    public function only_the_owner_of_the_post_can_delete_it()
+    {
+        $post = factory('App\Models\Post')->create();
+        $this->actingAs(factory('App\User')->create());
+
+        $this->delete("/posts/$post->id")->assertStatus(403);
+    }
 }
