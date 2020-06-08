@@ -37,7 +37,7 @@ class PostController extends Controller
      */
     public function store(PostRequest $request)
     {
-        $input = $request->only(['title', 'description']);
+        $input = $request->only(['title', 'description', 'category_id']);
 
         auth()->user()->posts()->create($input);
 
@@ -79,7 +79,7 @@ class PostController extends Controller
     {
         $this->authorize('update', $post);
 
-        $input = $request->only(['title', 'description']);
+        $input = $request->only(['title', 'description', 'category_id']);
 
         $post->update($input);
 
