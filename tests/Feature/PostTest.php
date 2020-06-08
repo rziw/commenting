@@ -17,6 +17,8 @@ class PostTest extends TestCase
         $this->be(factory('App\User')->create());
         $attributes = factory('App\Models\Post')->raw();
 
+        $this->get("/posts/create")->assertStatus(200);
+
         $response = $this->post('/posts', $attributes);
 
         $this->assertDatabaseHas('posts', $attributes);
