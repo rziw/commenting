@@ -27,14 +27,6 @@ class PostTest extends TestCase
     }
 
     /** @test */
-    public function only_authenticated_user_can_create_a_post()
-    {
-        $attributes = factory('App\Models\Post')->raw();
-
-        $response = $this->post('/posts', $attributes)->assertRedirect('login');
-    }
-
-    /** @test */
     public function post_requires_title()
     {
         $this->actingAs(factory('App\User')->create());
@@ -83,11 +75,13 @@ class PostTest extends TestCase
     }
 
     /** @test */
-    public function only_authenticated_user_can_edit_a_post()
+    public function only_authenticated_user_can_manage_a_post()
     {
         $post = factory('App\Models\Post')->create();
 
+        $this->post('/posts', [])->assertRedirect('login');
         $this->get("/posts/$post->id/edit")->assertRedirect('login');
+        $this->delete("/posts/$post->id")->assertRedirect('login');
         $this->put("/posts/$post->id", [])->assertRedirect('login');
     }
 
@@ -119,8 +113,6 @@ class PostTest extends TestCase
     /** @test */
     public function user_can_delete_a_post()
     {
-        $this->withoutExceptionHandling();
-
         $this->actingAs(factory('App\User')->create());
 
         $post = factory('App\Models\Post')->create();
@@ -129,14 +121,6 @@ class PostTest extends TestCase
 
         $this->assertDatabaseMissing('posts', [$post->id]);
         $response->assertRedirect('/posts');
-    }
-
-    /** @test */
-    public function only_authenticated_user_can_delete_a_post()
-    {
-        $post = factory('App\Models\Post')->create();
-
-        $this->delete("/posts/$post->id")->assertRedirect('login');
     }
 
     /** @test */
