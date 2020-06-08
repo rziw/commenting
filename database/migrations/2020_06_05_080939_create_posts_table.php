@@ -19,11 +19,14 @@ class CreatePostsTable extends Migration
             $table->string('description');
             $table->string('status')->nullable();
             $table->bigInteger('owner_id')->unsigned();
+            $table->bigInteger('category_id')->unsigned();
 
             $table->timestamps();
 
             //relations
             $table->foreign('owner_id')->references('id')->on('users')
+                ->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')
                 ->onDelete('cascade')->onUpdate('cascade');
         });
     }

@@ -9,6 +9,7 @@ $factory->define(Post::class, function (Faker $faker) {
     return [
         'title' => $faker->title,
         'description' => $faker->text(500),
-        'owner_id'  => auth()->id() ?? factory('App\User')->create()
+        'owner_id'  => auth()->id() ?? factory('App\User')->create(),
+        'category_id'  => factory('App\Models\Category')->create()
     ];
 });
