@@ -1,6 +1,6 @@
 <form method="post" action="{{route('posts.store')}}">
     @csrf
-    @method('pots')
+    @method('post')
     <div>
         Title : <input type="text" name="title">
     </div>
