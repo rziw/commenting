@@ -130,4 +130,12 @@ class PostTest extends TestCase
         $this->assertDatabaseMissing('posts', [$post->id]);
         $response->assertRedirect('/posts');
     }
+
+    /** @test */
+    public function only_authenticated_user_can_delete_a_post()
+    {
+        $post = factory('App\Models\Post')->create();
+
+        $this->delete("/posts/$post->id")->assertRedirect('login');
+    }
 }
