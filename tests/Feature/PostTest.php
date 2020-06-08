@@ -27,6 +27,15 @@ class PostTest extends TestCase
     }
 
     /** @test */
+    public function there_should_be_view_with_category_to_create_a_post()
+    {
+        $this->be(factory('App\User')->create());
+        $category = factory('App\Models\Category')->create();
+
+        $this->get("/posts/create")->assertSee($category->title);
+    }
+
+    /** @test */
     public function post_requires_title()
     {
         $this->actingAs(factory('App\User')->create());
