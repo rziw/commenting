@@ -17,4 +17,14 @@ class PostTest extends TestCase
 
         $this->assertInstanceOf('App\User', $post->owner);
     }
+
+    /** @test */
+    public function it_belongs_to_a_category()
+    {
+        $this->withoutExceptionHandling();
+
+        $post = factory(\App\Models\Post::class)->make();
+
+        $this->assertInstanceOf('App\Models\Category', $post->category);
+    }
 }
