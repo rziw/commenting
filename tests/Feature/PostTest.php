@@ -58,8 +58,6 @@ class PostTest extends TestCase
         $this->be(factory('App\User')->create());
         $post = factory('App\Models\Post')->create();
 
-        echo "logged in : ".\auth()->id()."_";
-        echo "owner : ".$post->owner_id."_";
         $this->get("/posts/$post->id/edit")->assertStatus(200);
 
         $attributes = [
