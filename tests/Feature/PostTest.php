@@ -115,4 +115,19 @@ class PostTest extends TestCase
         $this->get("/posts/$post->id")->assertStatus(200)
         ->assertSee($post->title, $post->description);
     }
+
+    /** @test */
+    public function user_can_delete_a_post()
+    {
+        $this->withoutExceptionHandling();
+
+        $this->actingAs(factory('App\User')->create());
+
+        $post = factory('App\Models\Post')->create();
+
+        $response = $this->delete("/posts/$post->id");
+
+        $this->assertDatabaseMissing('posts', [$post->id]);
+//        $response->assertRedirect('/posts');
+    }
 }
