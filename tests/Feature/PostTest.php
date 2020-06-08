@@ -66,6 +66,21 @@ class PostTest extends TestCase
     }
 
     /** @test */
+    public function post_can_not_have_not_existed_category()
+    {
+        $this->actingAs(factory('App\User')->create());
+
+        $post = factory('App\Models\Post')->create();
+
+        $attributes = ['title' => 'Test title', 'description' => 'test Description', 'category_id' => 5];
+
+        $this->post('/posts', $attributes)->assertSessionHasErrors([
+            'category_id' => 'The selected category id is invalid.'
+        ]);
+        $this->put("/posts/$post->id", $attributes)->assertSessionHasErrors('category_id');
+    }
+
+    /** @test */
     public function user_can_edit_a_post()
     {
         $this->be(factory('App\User')->create());
