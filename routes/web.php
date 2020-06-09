@@ -25,7 +25,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::resource('/posts', 'PostController')->except('index');
 
-    Route::post('/posts/{post}/comments', 'CommentController@store');
+    Route::post('/posts/{post}/comments', 'CommentController@store')->name('comment.store');
 
 });
 
