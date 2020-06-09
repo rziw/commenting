@@ -11,7 +11,7 @@ $factory->define(Comment::class, function (Faker $faker) {
 
     return [
         'description' => $faker->text(),
-        'post_id' => factory('App\Models\Category'),
+        'post_id' => factory('App\Models\Post'),
         'user_id' => auth()->id() ?? $user->id,
         'user_name' => auth()->user()->name ?? $user->name
     ];
