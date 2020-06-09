@@ -14,22 +14,14 @@ class CommentTest extends TestCase
     /** @test */
     public function user_can_comment_on_a_post()
     {
-        $this->withoutExceptionHandling();
         $this->be(factory('App\User')->create());
-        $post = factory('App\Models\Post')->create();
+        $attributes = factory('App\Models\Comment')->raw();
 
-        $attributes = [
-            'description' => $this->faker->text(),
-            'post_id' => $post->id,
-            'user_id' => auth()->id(),
-            'user_name' => auth()->user()->name
-        ];
-
-        $response = $this->post("posts/$post->id/comments", $attributes);
+        $response = $this->post("posts/".$attributes['post_id']."/comments", $attributes);
 
         $this->assertDatabaseHas('comments', $attributes);
-        $response->assertRedirect('/posts/'.$post->id);
-        $this->get("/posts/$post->id")->assertSeeText($attributes['description']);
+        $response->assertRedirect('/posts/'.$attributes['post_id']);
+        $this->get("/posts/".$attributes['post_id'])->assertSeeText($attributes['description']);
     }
 
     /** @test */
