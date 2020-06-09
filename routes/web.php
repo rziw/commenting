@@ -22,11 +22,14 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => ['auth']], function () {
+
     Route::resource('/posts', 'PostController')->except('index');
+
+    Route::post('/posts/{post}/comments', 'CommentController@store');
+
 });
 
 Route::get('/posts', 'PostController@index');
 
-Route::post('/posts/{post}/comments', 'CommentController@store');
 
 
