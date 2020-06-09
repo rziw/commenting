@@ -33,4 +33,23 @@ class CommentTest extends TestCase
         $this->post("posts/".$attributes['post_id']."/comments", $attributes)->assertRedirect('login');
     }
 
+    /** @test */
+    public function comment_requires_description()
+    {
+        $this->be(factory('App\User')->create());
+        $post = factory('App\Models\Post')->create();
+
+        $this->post("posts/".$post->id."/comments", ['description' => null])
+            ->assertSessionHasErrors('description');
+    }
+
+    /** @test */
+    public function length_of_description_of_comment_should_be_at_least_ten()
+    {
+        $this->be(factory('App\User')->create());
+        $post = factory('App\Models\Post')->create();
+
+        $this->post("posts/".$post->id."/comments", ['description' => 'abcd'])
+            ->assertSessionHasErrors('description');
+    }
 }
