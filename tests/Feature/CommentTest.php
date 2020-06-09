@@ -10,6 +10,7 @@ class CommentTest extends TestCase
 {
     use RefreshDatabase;
     use WithFaker;
+
     /** @test */
     public function user_can_comment_on_a_post()
     {
@@ -29,5 +30,14 @@ class CommentTest extends TestCase
         $this->assertDatabaseHas('comments', $attributes);
         $response->assertRedirect('/posts/'.$post->id);
         $this->get("/posts/$post->id")->assertSeeText($attributes['description']);
+    }
+
+    /** @test */
+    public function only_authenticated_users_can_comment()
+    {
+        $post = factory('App\Models\Post')->create();
+        $attributes = factory('App\Models\Comment')->raw();
+
+        $this->post("posts/$post->id/comments", $attributes)->assertRedirect('login');
     }
 }
