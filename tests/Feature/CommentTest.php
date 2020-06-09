@@ -28,12 +28,9 @@ class CommentTest extends TestCase
     /** @test */
     public function only_authenticated_users_can_comment()
     {
-        $post = factory('App\Models\Post')->create();
         $attributes = factory('App\Models\Comment')->raw();
 
-        $this->post("posts/$post->id/comments", $attributes)->assertRedirect('login');
+        $this->post("posts/".$attributes['post_id']."/comments", $attributes)->assertRedirect('login');
     }
 
-//    /** @test */
-//    public function
 }
