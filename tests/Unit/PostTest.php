@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Database\Eloquent\Collection;
 use Tests\TestCase;
 
 
@@ -24,5 +25,13 @@ class PostTest extends TestCase
         $post = factory(\App\Models\Post::class)->make();
 
         $this->assertInstanceOf('App\Models\Category', $post->category);
+    }
+
+    /** @test */
+    public function it_has_many_comments()
+    {
+        $post = factory(\App\Models\Post::class)->make();
+
+        $this->assertInstanceOf(Collection::class, $post->comments);
     }
 }
