@@ -17,7 +17,8 @@ class CommentTest extends TestCase
         $this->be(factory('App\User')->create());
         $attributes = factory('App\Models\Comment')->raw();
 
-        $response = $this->post("posts/".$attributes['post_id']."/comments", $attributes);
+        $response = $this->post("posts/".$attributes['post_id']."/comments",
+            ['description' => $attributes['description']]);
 
         $this->assertDatabaseHas('comments', $attributes);
         $response->assertRedirect('/posts/'.$attributes['post_id']);
@@ -32,4 +33,7 @@ class CommentTest extends TestCase
 
         $this->post("posts/$post->id/comments", $attributes)->assertRedirect('login');
     }
+
+//    /** @test */
+//    public function
 }
