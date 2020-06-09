@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CommentRequest;
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -31,10 +32,10 @@ class CommentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\CommentRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request, Post $post)
+    public function store(CommentRequest $request, Post $post)
     {
         $input = [
             'description' => $request->description,
@@ -42,7 +43,7 @@ class CommentController extends Controller
             'user_name' => auth()->user()->name,
             'post_id' => $post->id
         ];
-        
+
         Comment::create($input);
 
         return redirect()->route('posts.show', $post->id);
