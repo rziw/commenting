@@ -85,13 +85,14 @@ class CommentTest extends TestCase
     }
 
     /** @test */
-    public function only_the_owner_of_the_comment_can_update_it()
+    public function only_the_owner_of_the_comment_can_manage_it()
     {
         $comment = factory('App\Models\Comment')->create();
         $this->be(factory('App\User')->create());
 
         $this->put("posts/".$comment->post_id."/comments/".$comment->id,
             ['description' => 'Changed description'])->assertStatus(403);
+        $this->delete("posts/".$comment->post_id."/comments/".$comment->id)->assertStatus(403);
     }
 
     /** @test */
