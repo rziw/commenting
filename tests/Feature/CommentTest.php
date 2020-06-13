@@ -71,4 +71,15 @@ class CommentTest extends TestCase
         $response->assertRedirect("posts/".$comment->post_id);
         $this->get("/posts/".$comment->post_id)->assertSeeText($attribute['description']);
     }
+
+    /** @test */
+    public function only_authenticated_users_can_edit_comment()
+    {
+        $attribute = ['description' => 'Changed description'];
+
+        $comment = factory('App\Models\Comment')->create();
+
+        $this->put("posts/".$comment->post_id."/comments/".$comment->id,
+            $attribute)->assertRedirect('login');
+    }
 }
