@@ -37,20 +37,27 @@ class CommentTest extends TestCase
     public function comment_requires_description()
     {
         $this->be(factory('App\User')->create());
-        $post = factory('App\Models\Post')->create();
+        $comment = factory('App\Models\Comment')->create();
 
-        $this->post("posts/".$post->id."/comments", ['description' => null])
+        $this->post("posts/".$comment->post_id."/comments", ['description' => null])
             ->assertSessionHasErrors('description');
+
+        $this->put("posts/".$comment->post_id."/comments/".$comment->id,
+            [])->assertSessionHasErrors('description');
     }
 
     /** @test */
     public function length_of_description_of_comment_should_be_at_least_ten()
     {
         $this->be(factory('App\User')->create());
-        $post = factory('App\Models\Post')->create();
+        $comment = factory('App\Models\Comment')->create();
 
-        $this->post("posts/".$post->id."/comments", ['description' => 'abcd'])
+        $attribute = ['description' => 'abcd'];
+
+        $this->post("posts/".$comment->post_id."/comments", ['description' => $attribute])
             ->assertSessionHasErrors('description');
+        $this->put("posts/".$comment->post_id."/comments/".$comment->id,
+            $attribute)->assertSessionHasErrors('description');
     }
 
     /** @test */
