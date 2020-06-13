@@ -74,11 +74,11 @@ class CommentController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\CommentRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Post $post,  Comment $comment)
+    public function update(CommentRequest $request, Post $post,  Comment $comment)
     {
         $this->authorize('update', $comment);
 
