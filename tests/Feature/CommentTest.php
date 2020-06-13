@@ -52,4 +52,23 @@ class CommentTest extends TestCase
         $this->post("posts/".$post->id."/comments", ['description' => 'abcd'])
             ->assertSessionHasErrors('description');
     }
+
+    /** @test */
+    public function user_can_edit_a_comment()
+    {
+        $this->withoutExceptionHandling();
+
+        $this->be(factory('App\User')->create());
+
+        $attribute = ['description' => 'Changed description'];
+
+        $comment = factory('App\Models\Comment')->create();
+
+        $response = $this->put("posts/".$comment->post_id."/comments/".$comment->id,
+            $attribute);
+
+        $this->assertDatabaseHas('comments', $attribute);
+        $response->assertRedirect("posts/".$comment->post_id);
+        $this->get("/posts/".$comment->post_id)->assertSeeText($attribute['description']);
+    }
 }
