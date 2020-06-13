@@ -56,8 +56,6 @@ class CommentTest extends TestCase
     /** @test */
     public function user_can_edit_a_comment()
     {
-        $this->withoutExceptionHandling();
-
         $this->be(factory('App\User')->create());
 
         $attribute = ['description' => 'Changed description'];
