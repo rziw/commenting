@@ -80,9 +80,7 @@ class CommentController extends Controller
      */
     public function update(Request $request, Post $post,  Comment $comment)
     {
-        if(auth()->id() != $comment->id) {
-            abort(403);
-        }
+        $this->authorize('update', $comment);
 
         $input = [
             'description' => $request->description,
