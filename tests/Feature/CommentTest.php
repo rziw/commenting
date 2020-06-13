@@ -76,12 +76,13 @@ class CommentTest extends TestCase
     }
 
     /** @test */
-    public function only_authenticated_users_can_update_comment()
+    public function only_authenticated_users_can_manage_it()
     {
         $comment = factory('App\Models\Comment')->create();
 
         $this->put("posts/".$comment->post_id."/comments/".$comment->id,
             ['description' => 'Changed description'])->assertRedirect('login');
+        $this->delete("posts/".$comment->post_id."/comments/".$comment->id)->assertRedirect('login');
     }
 
     /** @test */
