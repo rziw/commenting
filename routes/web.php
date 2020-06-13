@@ -27,6 +27,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::post('/posts/{post}/comments', 'CommentController@store')->name('comment.store');
 
+    Route::put('/posts/{post}/comments/{comment}', 'CommentController@update')->name('comment.update');
+
 });
 
 Route::get('/posts', 'PostController@index');

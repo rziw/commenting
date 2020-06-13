@@ -76,11 +76,20 @@ class CommentController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Post $post,  Comment $comment)
     {
-        //
+        $input = [
+            'description' => $request->description,
+            'user_id' => auth()->id(),
+            'user_name' => auth()->user()->name,
+            'post_id' => $post->id
+        ];
+
+        $comment->update($input);
+
+        return redirect()->route('posts.show', $post->id);
     }
 
     /**
