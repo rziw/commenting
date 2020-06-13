@@ -80,4 +80,16 @@ class CommentTest extends TestCase
         $this->put("posts/".$comment->post_id."/comments/".$comment->id,
             $attribute)->assertRedirect('login');
     }
+
+    /** @test */
+    public function only_the_owner_of_comment_can_update_it()
+    {
+        $attribute = ['description' => 'Changed description'];
+        $comment = factory('App\Models\Comment')->create();
+
+        $this->be(factory('App\User')->create());
+
+        $this->put("posts/".$comment->post_id."/comments/".$comment->id,
+            $attribute)->assertStatus(403);
+    }
 }
