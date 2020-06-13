@@ -61,7 +61,7 @@ class CommentTest extends TestCase
     }
 
     /** @test */
-    public function user_can_edit_a_comment()
+    public function user_can_update_a_comment()
     {
         $this->be(factory('App\User')->create());
 
@@ -78,7 +78,7 @@ class CommentTest extends TestCase
     }
 
     /** @test */
-    public function only_authenticated_users_can_edit_comment()
+    public function only_authenticated_users_can_update_comment()
     {
         $attribute = ['description' => 'Changed description'];
 
