@@ -93,4 +93,16 @@ class CommentTest extends TestCase
         $this->put("posts/".$comment->post_id."/comments/".$comment->id,
             ['description' => 'Changed description'])->assertStatus(403);
     }
+
+    /** @test */
+    public function user_can_delete_a_comment()
+    {
+        $this->be(factory('App\User')->create());
+        $comment = factory('App\Models\Comment')->create();
+
+        $response = $this->delete("posts/".$comment->post_id."/comments/".$comment->id);
+
+        $this->assertDatabaseMissing('comments', [$comment->id]);
+        $response->assertRedirect("posts/".$comment->post_id);
+    }
 }
