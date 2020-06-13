@@ -41,7 +41,6 @@ class CommentTest extends TestCase
 
         $this->post("posts/".$comment->post_id."/comments", ['description' => null])
             ->assertSessionHasErrors('description');
-
         $this->put("posts/".$comment->post_id."/comments/".$comment->id,
             [])->assertSessionHasErrors('description');
     }
@@ -64,10 +63,9 @@ class CommentTest extends TestCase
     public function user_can_update_a_comment()
     {
         $this->be(factory('App\User')->create());
+        $comment = factory('App\Models\Comment')->create();
 
         $attribute = ['description' => 'Changed description'];
-
-        $comment = factory('App\Models\Comment')->create();
 
         $response = $this->put("posts/".$comment->post_id."/comments/".$comment->id,
             $attribute);
@@ -80,23 +78,19 @@ class CommentTest extends TestCase
     /** @test */
     public function only_authenticated_users_can_update_comment()
     {
-        $attribute = ['description' => 'Changed description'];
-
         $comment = factory('App\Models\Comment')->create();
 
         $this->put("posts/".$comment->post_id."/comments/".$comment->id,
-            $attribute)->assertRedirect('login');
+            ['description' => 'Changed description'])->assertRedirect('login');
     }
 
     /** @test */
-    public function only_the_owner_of_comment_can_update_it()
+    public function only_the_owner_of_the_comment_can_update_it()
     {
-        $attribute = ['description' => 'Changed description'];
         $comment = factory('App\Models\Comment')->create();
-
         $this->be(factory('App\User')->create());
 
         $this->put("posts/".$comment->post_id."/comments/".$comment->id,
-            $attribute)->assertStatus(403);
+            ['description' => 'Changed description'])->assertStatus(403);
     }
 }
