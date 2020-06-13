@@ -102,6 +102,8 @@ class CommentController extends Controller
      */
     public function destroy(Post $post, Comment $comment)
     {
+        $this->authorize('update', $comment);
+
         $comment->delete();
 
         return redirect()->route('posts.show', $post->id);
