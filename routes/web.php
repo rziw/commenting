@@ -29,6 +29,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::put('/posts/{post}/comments/{comment}', 'CommentController@update')->name('comment.update');
 
+    Route::delete('/posts/{post}/comments/{comment}', 'CommentController@destroy')->name('comment.delete');
 });
 
 Route::get('/posts', 'PostController@index');
